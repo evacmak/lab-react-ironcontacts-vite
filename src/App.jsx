@@ -12,14 +12,30 @@ function App() {
     const randomContact = contactsCopy[randomIndex]
 
     contactsCopy.splice(randomIndex, 1);
-    
+
     setContacts([ randomContact,...contacts])
   }
+
+  const sortByName = () => {
+    const sortedContacts = [...contacts].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setContacts(sortedContacts);
+  };
+
+  const sortByPopularity = () => {
+    const sortedContacts = [...contacts].sort(
+      (a, b) => b.popularity - a.popularity
+    );
+    setContacts(sortedContacts);
+  };
 
   return (
     <div className="App">
       <h1>LAB | React IronContacts</h1>
       <button onClick={addContact}>Add Random Contact</button>
+      <button onClick={sortByName}>Sort by Name</button>
+      <button onClick={sortByPopularity}>Sort by Popularity</button>
       <table>
         <thead>
           <tr>
@@ -28,6 +44,7 @@ function App() {
             <th>Popularity</th>
             <th>Won an Oscar</th>
             <th>Won an Emmy</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +55,7 @@ function App() {
               <td>{contact.popularity}</td>
               <td>{contact.wonOscar && "🏆"}</td>
               <td>{contact.wonEmmy && "🌟"}</td>
+              <td><button onClick={() => contact.setContacts(contacts.id)}>Delete.</button></td>
             </tr>
           ))}
         </tbody>
