@@ -30,6 +30,11 @@ function App() {
     setContacts(sortedContacts);
   };
 
+  const deleteContact = (id) => {
+    const updatedContacts = contacts.filter(contact => contact.id !== id);
+    setContacts(updatedContacts);
+  };
+
   return (
     <div className="App">
       <h1>LAB | React IronContacts</h1>
@@ -55,7 +60,7 @@ function App() {
               <td>{contact.popularity}</td>
               <td>{contact.wonOscar && "🏆"}</td>
               <td>{contact.wonEmmy && "🌟"}</td>
-              <td><button onClick={() => contact.setContacts(contacts.id)}>Delete.</button></td>
+              <td><button onClick={() => deleteContact(contact.id)}>Delete</button></td>
             </tr>
           ))}
         </tbody>
