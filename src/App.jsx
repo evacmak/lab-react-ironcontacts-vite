@@ -4,17 +4,19 @@ import { useState } from "react";
 
 function App() {
   const [contacts, setContacts] = useState(contactsArray.slice(0, 5));
+  const [remainingContacts, setRemainingContacts] = useState(contactsArray.slice(5));
 
   const addContact = () => {
-    const contactsCopy = [...contactsArray].slice(5)
-    const randomIndex = Math.floor(Math.random() *contactsCopy.length)
+    if (remainingContacts.length === 0) return;
 
-    const randomContact = contactsCopy[randomIndex]
+    const randomIndex = Math.floor(Math.random() * remainingContacts.length);
+    const randomContact = remainingContacts[randomIndex];
 
-    contactsCopy.splice(randomIndex, 1);
-
-    setContacts([ randomContact,...contacts])
-  }
+    setContacts([randomContact, ...contacts]);
+    setRemainingContacts(
+      remainingContacts.filter((_, index) => index !== randomIndex)
+    );
+  };
 
   const sortByName = () => {
     const sortedContacts = [...contacts].sort((a, b) =>
@@ -38,7 +40,9 @@ function App() {
   return (
     <div className="App">
       <h1>LAB | React IronContacts</h1>
-      <button onClick={addContact}>Add Random Contact</button>
+      <button onClick={addContact} disabled={remainingContacts.length === 0}>
+        Add Random Contact
+      </button>
       <button onClick={sortByName}>Sort by Name</button>
       <button onClick={sortByPopularity}>Sort by Popularity</button>
       <table>
@@ -57,7 +61,7 @@ function App() {
             <tr key={contact.id}>
               <td><img src={contact.pictureUrl} alt="contact picture" /></td>
               <td>{contact.name}</td>
-              <td>{contact.popularity}</td>
+              <td>{contact.popularity.toFixed(2)}</td>
               <td>{contact.wonOscar && "🏆"}</td>
               <td>{contact.wonEmmy && "🌟"}</td>
               <td><button onClick={() => deleteContact(contact.id)}>Delete</button></td>
